@@ -20,7 +20,7 @@ public class UserDataLoader implements CommandLineRunner {
     private void loadUserData() {
         if(userRepository.count() == 0) {
             UserEntity user1 = new UserEntity("Renan Dorneles", "renas", "0417428045", Date.valueOf("2000-03-23"), "+5551998691353", "rdorneles64@gmail.com", "teste");
-            UserRepository.save(user1);
+            userRepository.save(user1);
         }
     }
 }

@@ -1,14 +1,10 @@
 package com.levelup.library.repositories;
 
 import com.levelup.library.entities.UserEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
-    List<UserEntity> findAll();
-
-    UserRepository findById(long id);
-
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 }
