@@ -1,0 +1,1 @@
+INSERT INTO person VALUES(DEFAULT, 'Renan Dorneles', 'renas', '0417428045', '2000-03-23', '+5551998691353', 'rdorneles64@gmail.com', 'teste');
