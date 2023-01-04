@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +26,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public Set<UserEntity> getAllUsers() {
+        Set<UserEntity> users = userRepository.getAllUsers();
+        return users;
+    }
     public UserEntity getUser(Long id) {
         Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");

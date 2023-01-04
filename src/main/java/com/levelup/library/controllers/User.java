@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
@@ -21,6 +22,12 @@ public class User {
     @Autowired
     private UserServiceImpl userService;
 
+    @GetMapping("/all")
+    ResponseEntity<Map<String, Set<UserEntity>>> getAllUsers(){
+        Map<String, Set<UserEntity>> users = new HashMap<>();
+        users.put("users", userService.getAllUsers());
+        return new ResponseEntity(users, HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     ResponseEntity<UserEntity> getUser(@PathVariable Long id){
         UserEntity foundedUser = userService.getUser(id);
