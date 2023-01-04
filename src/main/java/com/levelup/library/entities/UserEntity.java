@@ -2,7 +2,6 @@ package com.levelup.library.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 
 import java.sql.Date;
@@ -38,7 +37,7 @@ public class UserEntity {
     @NotBlank(message = "CPF is mandatory.")
     private String cpf;
     @Column(nullable = false)
-//    @NotBlank(message = "Birth Date is mandatory.")
+    @NotNull(message = "Birth Date is mandatory")
     private Date birthDate;
     @Column(length = 14)
     private String phone;
@@ -93,5 +92,4 @@ public class UserEntity {
                 id, name, nickname
         );
     }
-
 }

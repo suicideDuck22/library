@@ -4,6 +4,13 @@ import com.levelup.library.entities.UserEntity;
 import com.levelup.library.exceptions.EmailInUseException;
 import com.levelup.library.interfaces.UserService;
 import com.levelup.library.repositories.UserRepository;
+import com.levelup.library.utils.Validator;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaUpdate;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,28 +20,57 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
     private UserRepository userRepository;
 
     public UserEntity getUser(Long id) {
-        return null;
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
+            throw new NoSuchElementException("User with ID " + id + " not founded.");
+        }));
+
+        return user.get();
     }
 
     public void createUser(UserEntity newUser) {
-        Optional<String> searchEmailResponse = Optional.ofNullable(userRepository.findByEmail(newUser.getEmail()));
-        if(searchEmailResponse.isPresent()){
-            throw new EmailInUseException();
-        }
+        Validator.EmailIsAvailable(newUser);
 
         newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
-
-        System.out.println("Email não está em uso");
-//        userRepository.save(newUser);
+        userRepository.save(newUser);
     }
 
     public void deleteUser(Long id) {
         Optional<UserEntity> userToDelete = Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
+
+        userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateUser(UserEntity updatedUser) {
+        Optional<UserEntity> optOldUser = Optional.ofNullable(userRepository.findById(updatedUser.getId()).orElseThrow(() -> {
+            throw new NoSuchElementException("User with ID " + updatedUser.getId() + " not founded.");
+        }));
+
+        Validator.EmailIsAvailable(updatedUser);
+
+        UserEntity oldUser = optOldUser.get();
+        updatedUser.setPassword(DigestUtils.sha256Hex(updatedUser.getPassword()));
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<UserEntity> criteria = builder.createCriteriaUpdate(UserEntity.class);
+        Root<UserEntity> root = criteria.from(UserEntity.class);
+        criteria.set("name", updatedUser.getName());
+        criteria.set("nickname", updatedUser.getNickname());
+        criteria.set("cpf", updatedUser.getCpf());
+        criteria.set("birthDate", updatedUser.getBirthDate());
+        criteria.set("phone", updatedUser.getPhone());
+        criteria.set("email", updatedUser.getEmail());
+        criteria.set("password", updatedUser.getPassword());
+
+        criteria.where(builder.equal(root.get("id"), oldUser.getId()));
+        entityManager.createQuery(criteria).executeUpdate();
     }
 }

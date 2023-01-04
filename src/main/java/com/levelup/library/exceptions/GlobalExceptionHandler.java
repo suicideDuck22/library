@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleSQLException(SQLException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
-        error.put("message", "An error occurred while trying create the new user, please try again.");
+        error.put("message", "An error occurred while executing this process, please try again.");
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 

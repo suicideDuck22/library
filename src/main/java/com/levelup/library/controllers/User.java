@@ -21,9 +21,10 @@ public class User {
     @Autowired
     private UserServiceImpl userService;
 
-    @GetMapping("/create")
-    String createUserPage(){
-        return "Rendering create user page";
+    @GetMapping("/{id}")
+    ResponseEntity<UserEntity> getUser(@PathVariable Long id){
+        UserEntity foundedUser = userService.getUser(id);
+        return new ResponseEntity(foundedUser, HttpStatus.OK);
     }
 
     @PostMapping(
@@ -32,8 +33,8 @@ public class User {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     ResponseEntity<Map<String, String>> createUser(@RequestBody @Valid UserEntity newUser){
-        userService.createUser(newUser);
         Map<String, String> responseObject = new HashMap<>();
+        userService.createUser(newUser);
 
         responseObject.put("message", "User created successfully.");
         return new ResponseEntity(responseObject, HttpStatus.CREATED);
@@ -44,7 +45,18 @@ public class User {
         Map<String, String> responseObject = new HashMap<>();
         userService.deleteUser(id);
 
-        responseObject.put("teste", "teste");
+        responseObject.put("message", "User with ID " + id + " has been deleted.");
         return new ResponseEntity(responseObject, HttpStatus.OK);
+    }
+
+    @PutMapping(
+            value = "/",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    ResponseEntity<Map<String, String>> updateUser(@RequestBody @Valid UserEntity updatedUser){
+        Map<String, String> responseobject = new HashMap<>();
+        userService.updateUser(updatedUser);
+        responseobject.put("message", "User updated successfully.");
+        return new ResponseEntity(responseobject, HttpStatus.OK);
     }
 }
