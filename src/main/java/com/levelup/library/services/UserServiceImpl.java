@@ -1,16 +1,13 @@
 package com.levelup.library.services;
 
 import com.levelup.library.entities.UserEntity;
+import com.levelup.library.exceptions.EmailInUseException;
 import com.levelup.library.interfaces.UserService;
 import com.levelup.library.repositories.UserRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -23,8 +20,16 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public Map<String, String> createUser(UserEntity newUser) {
-        return null;
+    public void createUser(UserEntity newUser) {
+        Optional<String> searchEmailResponse = Optional.ofNullable(userRepository.findByEmail(newUser.getEmail()));
+        if(searchEmailResponse.isPresent()){
+            throw new EmailInUseException();
+        }
+
+        newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
+
+        System.out.println("Email não está em uso");
+//        userRepository.save(newUser);
     }
 
     public void deleteUser(Long id) {

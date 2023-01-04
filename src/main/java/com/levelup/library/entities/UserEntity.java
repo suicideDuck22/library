@@ -1,10 +1,7 @@
 package com.levelup.library.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 
@@ -37,8 +34,7 @@ public class UserEntity {
     @Column(length = 45)
     private String nickname;
     @Column(length = 11, nullable = false)
-//    @Min(value = 11, message = "CPF need to have a min length of 11 characters.")
-//    @Max(value = 11, message = "CPF need to have a max length of 11 characters.")
+    @Size(max = 11, min = 11, message = "CPF need to have 11 characters.")
     @NotBlank(message = "CPF is mandatory.")
     private String cpf;
     @Column(nullable = false)

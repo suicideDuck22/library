@@ -18,9 +18,9 @@ public class UserDataLoader implements CommandLineRunner {
     }
 
     private void loadUserData() {
-//        if(userRepository.count() == 0) {
-//            UserEntity user1 = new UserEntity("Renan Dorneles", "renas", "04174928045", Date.valueOf("2000-03-23"), "+5551998691353", "rdorneles64@gmail.com", "46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5");
-//            userRepository.save(user1);
-//        }
+        if(userRepository.count() == 0) {
+            UserEntity user1 = new UserEntity("Renan Dorneles", "renas", "04174928045", Date.valueOf("2000-03-23"), "+5551998691353", "rdorneles64@gmail.com", "46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5");
+            userRepository.save(user1);
+        }
     }
 }
