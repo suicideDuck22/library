@@ -37,8 +37,8 @@ public class UserEntity {
     @Column(length = 45)
     private String nickname;
     @Column(length = 11, nullable = false)
-    @Min(value = 11, message = "CPF need to have a min length of 11 characters.")
-    @Max(value = 11, message = "CPF need to have a max length of 11 characters.")
+//    @Min(value = 11, message = "CPF need to have a min length of 11 characters.")
+//    @Max(value = 11, message = "CPF need to have a max length of 11 characters.")
     @NotBlank(message = "CPF is mandatory.")
     private String cpf;
     @Column(nullable = false)

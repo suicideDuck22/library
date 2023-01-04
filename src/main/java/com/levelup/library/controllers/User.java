@@ -2,6 +2,7 @@ package com.levelup.library.controllers;
 
 import com.levelup.library.entities.UserEntity;
 import com.levelup.library.repositories.UserRepository;
+import com.levelup.library.services.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import java.util.Optional;
 public class User {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserServiceImpl userService;
 
     @GetMapping("/create")
     String createUserPage(){
@@ -51,25 +54,14 @@ public class User {
         return new ResponseEntity(responseObject, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
         Map<String, String> responseObject = new HashMap<>();
-        Optional<UserEntity> userToDelete = Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
-            throw new NoSuchElementException("User with ID " + id + " not founded.");
-        }));
+        userService.deleteUser(id);
 
         responseObject.put("teste", "teste");
         System.out.println("existe");
         return new ResponseEntity(responseObject, HttpStatus.OK);
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoSuchElementException.class)
-    Map<String, String> handleNoSuchElementException(NoSuchElementException ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", ex.getMessage());
-        error.put("message", "User not found.");
-        return error;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

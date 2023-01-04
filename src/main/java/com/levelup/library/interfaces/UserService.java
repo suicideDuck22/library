@@ -9,5 +9,5 @@ public interface UserService {
 
     Map<String, String> createUser(UserEntity newUser);
 
-    Map<String, String> deleteUser(Long id);
+    void deleteUser(Long id);
 }
