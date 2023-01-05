@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface BookService {
     Collection<BookEntity> getAllBooks();
 
-    BookEntity getBook();
+    BookEntity getBook(Long id);
 
     void createBook(BookEntity newBook);
 
