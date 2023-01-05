@@ -1,7 +1,6 @@
 package com.levelup.library.controllers;
 
 import com.levelup.library.entities.UserEntity;
-import com.levelup.library.repositories.UserRepository;
 import com.levelup.library.services.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +9,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
 public class User {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private UserServiceImpl userService;
 
     @GetMapping("/all")
-    ResponseEntity<Map<String, Set<UserEntity>>> getAllUsers(){
-        Map<String, Set<UserEntity>> users = new HashMap<>();
+    ResponseEntity<Map<String, Collection<UserEntity>>> getAllUsers(){
+        Map<String, List<UserEntity>> users = new HashMap<>();
         users.put("users", userService.getAllUsers());
         return new ResponseEntity(users, HttpStatus.OK);
     }
