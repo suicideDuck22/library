@@ -1,7 +1,7 @@
 package com.levelup.library.entities;
 
-import com.levelup.library.entities.UserEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
 import java.sql.Date;
@@ -27,22 +27,27 @@ public class BookEntity {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Title is mandatory.")
     private String title;
 
     @Column(nullable = false)
+    @NotBlank(message = "Synopsis is mandatory.")
     private String synopsis;
 
     @Column(nullable = false)
+    @NotBlank(message = "Author Name is mandatory.")
     private String authorName;
 
     @Column(nullable = false)
     private Date publishedAt;
 
     @Column(nullable = false)
+    @NotBlank(message = "Publisher is mandatory.")
     private String publisher;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
+    @NotBlank(message = "Book Status is mandatory.")
     private BookStatus bookStatus;
 
     private enum BookStatus {

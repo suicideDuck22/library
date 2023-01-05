@@ -23,10 +23,6 @@ public class Login {
     private UserRepository userRepository;
     @GetMapping("/login")
     ResponseEntity<UserEntity> login() {
-        Optional<UserEntity> returnedUser = Optional.ofNullable(userRepository.findByEmailAndPassword("rdorneles64@gmail.com", "teste"));
-        if(returnedUser.isPresent()){
-            return new ResponseEntity(returnedUser.get(), HttpStatus.OK);
-        }
         return null;
     }
 

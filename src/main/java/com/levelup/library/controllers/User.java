@@ -31,10 +31,11 @@ public class User {
 
     @PostMapping(
             value = "/create",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     ResponseEntity<Map<String, String>> createUser(@RequestBody @Valid UserEntity newUser){
+        System.out.println("Post new user:");
+        System.out.println(newUser);
         Map<String, String> responseObject = new HashMap<>();
         userService.createUser(newUser);
 

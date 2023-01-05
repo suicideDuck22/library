@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService {
 
     public void createUser(UserEntity newUser) {
         Validator.EmailIsAvailable(newUser);
+        Validator.validateCPF(newUser.getCpf());
+        Validator.CPFAvailable(newUser);
 
         newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
         userRepository.save(newUser);

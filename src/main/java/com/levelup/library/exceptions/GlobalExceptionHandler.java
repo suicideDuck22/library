@@ -46,7 +46,23 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleEmailInUseException(EmailInUseException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("error", "Email in use.");
-        error.put("message", "This email has been in use by another user, please change another.");
+        error.put("message", ex.getMessage());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ CpfInUseException.class })
+    public ResponseEntity<Map<String, String>> handleCpfInUseException(CpfInUseException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "CPF in use.");
+        error.put("message", ex.getMessage());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ InvalidCpfException.class })
+    public ResponseEntity<Map<String, String>> handleInvalidCpfException(InvalidCpfException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "CPF in use.");
+        error.put("message", ex.getMessage());
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
 }

@@ -6,13 +6,14 @@ import com.levelup.library.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Service
 public class BookServiceImpl implements BookService {
 
     @Autowired
@@ -35,7 +36,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void createBook(BookEntity newBook) {
-
+        bookRepository.save(newBook);
     }
 
     @Override
