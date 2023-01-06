@@ -38,6 +38,7 @@ public class UserEntity {
     private String cpf;
     @Column(nullable = false)
     @NotNull(message = "Birth Date is mandatory")
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
     @Column(length = 14)
     private String phone;

@@ -34,8 +34,6 @@ public class User {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     ResponseEntity<Map<String, String>> createUser(@RequestBody @Valid UserEntity newUser){
-        System.out.println("Post new user:");
-        System.out.println(newUser);
         Map<String, String> responseObject = new HashMap<>();
         userService.createUser(newUser);
 

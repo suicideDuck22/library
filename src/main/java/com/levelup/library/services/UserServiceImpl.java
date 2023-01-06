@@ -58,27 +58,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void updateUser(UserEntity updatedUser) {
-        Optional<UserEntity> optOldUser = Optional.ofNullable(userRepository.findById(updatedUser.getId()).orElseThrow(() -> {
+
+        Optional.ofNullable(userRepository.findById(updatedUser.getId()).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + updatedUser.getId() + " not founded.");
         }));
 
         Validator.EmailIsAvailable(updatedUser);
 
-        UserEntity oldUser = optOldUser.get();
         updatedUser.setPassword(DigestUtils.sha256Hex(updatedUser.getPassword()));
 
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate<UserEntity> criteria = builder.createCriteriaUpdate(UserEntity.class);
-        Root<UserEntity> root = criteria.from(UserEntity.class);
-        criteria.set("name", updatedUser.getName());
-        criteria.set("nickname", updatedUser.getNickname());
-        criteria.set("cpf", updatedUser.getCpf());
-        criteria.set("birthDate", updatedUser.getBirthDate());
-        criteria.set("phone", updatedUser.getPhone());
-        criteria.set("email", updatedUser.getEmail());
-        criteria.set("password", updatedUser.getPassword());
-
-        criteria.where(builder.equal(root.get("id"), oldUser.getId()));
-        entityManager.createQuery(criteria).executeUpdate();
+        entityManager.merge(updatedUser);
     }
 }
