@@ -4,6 +4,7 @@ import com.levelup.library.entities.UserEntity;
 import com.levelup.library.exceptions.CpfInUseException;
 import com.levelup.library.exceptions.EmailInUseException;
 import com.levelup.library.exceptions.InvalidCpfException;
+import com.levelup.library.exceptions.InvalidDateException;
 import com.levelup.library.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,11 @@ public class Validator {
                 throw new CpfInUseException(user.getCpf());
             }
         });
+    }
+
+    public static void IsAValidDate(String date){
+        if(!date.matches("([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))")){
+            throw new InvalidDateException(date);
+        }
     }
 }

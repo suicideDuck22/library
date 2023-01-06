@@ -65,4 +65,12 @@ public class GlobalExceptionHandler {
         error.put("message", ex.getMessage());
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({ InvalidDateException.class })
+    public ResponseEntity<Map<String, String>> handleInvalidDateException(InvalidDateException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Invalid date.");
+        error.put("message", ex.getMessage());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
 }
