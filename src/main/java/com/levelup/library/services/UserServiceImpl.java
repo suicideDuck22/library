@@ -1,15 +1,11 @@
 package com.levelup.library.services;
 
 import com.levelup.library.entities.UserEntity;
-import com.levelup.library.exceptions.EmailInUseException;
 import com.levelup.library.interfaces.UserService;
 import com.levelup.library.repositories.UserRepository;
 import com.levelup.library.utils.Validator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,9 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void createUser(UserEntity newUser) {
-        Validator.EmailIsAvailable(newUser);
-        Validator.validateCPF(newUser.getCpf());
-        Validator.CPFAvailable(newUser);
+        validateUserCPFEmailBirthDate(newUser);
 
         newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
         userRepository.save(newUser);
@@ -58,15 +51,23 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void updateUser(UserEntity updatedUser) {
+        if(updatedUser.getId() == null)
+            throw new NullPointerException("User ID field on updates cannot be null.");
 
         Optional.ofNullable(userRepository.findById(updatedUser.getId()).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + updatedUser.getId() + " not founded.");
         }));
 
-        Validator.EmailIsAvailable(updatedUser);
+        validateUserCPFEmailBirthDate(updatedUser);
 
         updatedUser.setPassword(DigestUtils.sha256Hex(updatedUser.getPassword()));
 
         entityManager.merge(updatedUser);
+    }
+
+    public void validateUserCPFEmailBirthDate(UserEntity user){
+        Validator.EmailIsAvailable(user);
+        Validator.validateCPF(user.getCpf());
+        Validator.CPFAvailable(user);
     }
 }

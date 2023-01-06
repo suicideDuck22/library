@@ -17,7 +17,7 @@ public class User {
     @Autowired
     private UserServiceImpl userService;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     ResponseEntity<Map<String, Collection<UserEntity>>> getAllUsers(){
         Map<String, List<UserEntity>> users = new HashMap<>();
         users.put("users", userService.getAllUsers());
@@ -30,7 +30,7 @@ public class User {
     }
 
     @PostMapping(
-            value = "/create",
+            value = "/",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     ResponseEntity<Map<String, String>> createUser(@RequestBody @Valid UserEntity newUser){

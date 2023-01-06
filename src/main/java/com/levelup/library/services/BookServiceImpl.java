@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookEntity getBook(@PathVariable Long id) {
+    public BookEntity getBook(Long id) {
         Optional<BookEntity> book = Optional.ofNullable(bookRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
