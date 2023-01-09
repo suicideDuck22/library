@@ -9,9 +9,11 @@ public interface BookService {
 
     BookEntity getBook(Long id);
 
-    void createBook(BookEntity newBook);
+    void insertBook(BookEntity newBook);
 
     void deleteBook(Long id);
 
-    void updateBook(BookEntity updatedBook);
+    void updateBook(Long id, BookEntity updatedBook);
+
+    void withdrawBook(Long id);
 }

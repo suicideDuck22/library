@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void createBook(BookEntity newBook) {
+    public void insertBook(BookEntity newBook) {
         bookRepository.save(newBook);
     }
 
@@ -45,7 +45,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(BookEntity updatedBook) {
+    public void updateBook(Long id, BookEntity updatedBook) {
+
+    }
+
+    @Override
+    public void withdrawBook(Long id){
 
     }
 }

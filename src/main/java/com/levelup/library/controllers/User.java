@@ -51,12 +51,12 @@ public class User {
     }
 
     @PutMapping(
-            value = "/",
+            value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    ResponseEntity<Map<String, String>> updateUser(@RequestBody @Valid UserEntity updatedUser){
+    ResponseEntity<Map<String, String>> updateUser(@RequestBody @Valid UserEntity updatedUser, @PathVariable Long id){
         Map<String, String> responseobject = new HashMap<>();
-        userService.updateUser(updatedUser);
+        userService.updateUser(id, updatedUser);
         responseobject.put("message", "User updated successfully.");
         return new ResponseEntity(responseobject, HttpStatus.OK);
     }

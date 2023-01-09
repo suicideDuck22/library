@@ -50,12 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateUser(UserEntity updatedUser) {
-        if(updatedUser.getId() == null)
-            throw new NullPointerException("User ID field on updates cannot be null.");
-
-        Optional.ofNullable(userRepository.findById(updatedUser.getId()).orElseThrow(() -> {
-            throw new NoSuchElementException("User with ID " + updatedUser.getId() + " not founded.");
+    public void updateUser(Long id, UserEntity updatedUser) {
+        Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
+            throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
 
         validateUserCPFEmailBirthDate(updatedUser);
