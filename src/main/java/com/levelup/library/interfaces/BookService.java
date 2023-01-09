@@ -14,6 +14,4 @@ public interface BookService {
     void deleteBook(Long id);
 
     void updateBook(Long id, BookEntity updatedBook);
-
-    void withdrawBook(Long id);
 }

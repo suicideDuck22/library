@@ -48,9 +48,4 @@ public class BookServiceImpl implements BookService {
     public void updateBook(Long id, BookEntity updatedBook) {
 
     }
-
-    @Override
-    public void withdrawBook(Long id){
-
-    }
 }

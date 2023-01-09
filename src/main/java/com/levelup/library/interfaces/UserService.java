@@ -1,10 +1,12 @@
 package com.levelup.library.interfaces;
 
 import com.levelup.library.entities.UserEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Map;
 
+@Service
 public interface UserService {
     Collection<UserEntity > getAllUsers();
 

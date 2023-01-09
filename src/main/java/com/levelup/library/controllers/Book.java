@@ -65,13 +65,4 @@ public class Book {
         responseObject.put("message", "Book updated successfully.");
         return new ResponseEntity(responseObject, HttpStatus.OK);
     }
-
-    @PutMapping("/withdraw/{id}")
-    ResponseEntity<Map<String, String>> withdraw(@PathVariable Long id) {
-        Map<String, String> resposeObject = new HashMap<>();
-        bookService.withdrawBook(id);
-
-        resposeObject.put("message", "Book withdrawed successfully");
-        return new ResponseEntity(resposeObject, HttpStatus.OK);
-    }
 }
