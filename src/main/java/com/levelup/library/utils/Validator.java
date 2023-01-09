@@ -10,6 +10,10 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Optional;
 
@@ -90,7 +94,11 @@ public class Validator {
     }
 
     public static void IsAValidDate(String date){
-        if(!date.matches("([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))")){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        try{
+            LocalDate.parse(date, dateFormatter);
+        } catch(DateTimeParseException ex){
             throw new InvalidDateException(date);
         }
     }

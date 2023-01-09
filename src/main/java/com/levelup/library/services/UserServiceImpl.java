@@ -69,5 +69,6 @@ public class UserServiceImpl implements UserService {
         Validator.EmailIsAvailable(user);
         Validator.validateCPF(user.getCpf());
         Validator.CPFAvailable(user);
+        Validator.IsAValidDate(user.getBirthDate());
     }
 }

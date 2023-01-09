@@ -13,7 +13,7 @@ public class UserEntity {
 
     protected UserEntity(){}
 
-    public UserEntity(String name, String nickname, String cpf, Date birthDate, String phone, String email, String password) {
+    public UserEntity(String name, String nickname, String cpf, String birthDate, String phone, String email, String password) {
         this.name = name;
         this.nickname = nickname;
         this.cpf = cpf;
@@ -37,9 +37,8 @@ public class UserEntity {
     @NotBlank(message = "CPF is mandatory.")
     private String cpf;
     @Column(nullable = false)
-    @NotNull(message = "Birth Date is mandatory")
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    @NotBlank(message = "Birth Date is mandatory")
+    private String birthDate;
     @Column(length = 14)
     private String phone;
     @Column(length = 45, nullable = false)
@@ -66,7 +65,7 @@ public class UserEntity {
         return cpf;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
