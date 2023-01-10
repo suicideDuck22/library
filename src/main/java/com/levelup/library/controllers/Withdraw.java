@@ -6,10 +6,8 @@ import com.levelup.library.services.WithdrawServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,10 +20,10 @@ public class Withdraw {
     @Autowired
     private WithdrawServiceImpl withdrawService;
 
-    @GetMapping("/")
-    ResponseEntity<Map<String, Collection<WithdrawEntity>>> getAll(){
+    @GetMapping()
+    ResponseEntity<Map<String, Collection<WithdrawEntity>>> getAll(@RequestParam(required = false)  String status, @RequestParam Long id){
         Map<String, List<WithdrawEntity>> responseObject = new HashMap<>();
-        List<WithdrawEntity> withdraws =  withdrawService.getAll();
+        List<WithdrawEntity> withdraws = withdrawService.getWithdrawsByUser(id, status);
 
         responseObject.put("withdraws", withdraws);
         return new ResponseEntity(responseObject, HttpStatus.OK);

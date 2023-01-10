@@ -2,6 +2,7 @@ package com.levelup.library.controllers;
 
 import com.levelup.library.entities.UserEntity;
 import com.levelup.library.services.UserServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,20 @@ public class User {
     private UserServiceImpl userService;
 
     @GetMapping("/")
-    ResponseEntity<Map<String, Collection<UserEntity>>> getAllUsers(){
+    ResponseEntity<Map<String, Collection<UserEntity>>> getAllUsers(HttpSession session){
+        System.out.println("Session infos");
+        System.out.println(session.getId());
+        System.out.println(session.getAttributeNames());
         Map<String, List<UserEntity>> users = new HashMap<>();
         users.put("users", userService.getAllUsers());
         return new ResponseEntity(users, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    ResponseEntity<UserEntity> getUser(@PathVariable Long id){
+    ResponseEntity<UserEntity> getUser(@PathVariable Long id, HttpSession session){
+
+        System.out.println("Session infos");
+        System.out.println(session.getId());
+        System.out.println(session.getAttributeNames());
         UserEntity foundedUser = userService.getUser(id);
         return new ResponseEntity(foundedUser, HttpStatus.OK);
     }

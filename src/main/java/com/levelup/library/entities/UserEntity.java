@@ -25,28 +25,27 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
     @Column(length = 45, nullable = false)
-    @NotBlank(message = "Name is mandatory.")
+    @NotEmpty(message = "Name is mandatory.")
     private String name;
     @Column(length = 45)
     private String nickname;
     @Column(length = 11, nullable = false)
     @Size(max = 11, min = 11, message = "CPF need to have 11 characters.")
-    @NotBlank(message = "CPF is mandatory.")
+    @NotEmpty(message = "CPF is mandatory.")
     private String cpf;
     @Column(nullable = false)
-    @NotBlank(message = "Birth Date is mandatory")
+    @NotEmpty(message = "Birth Date is mandatory")
     private String birthDate;
     @Column(length = 14)
     private String phone;
     @Column(length = 45, nullable = false)
-    @NotBlank(message = "Email is mandatory.")
+    @NotEmpty(message = "Email is mandatory.")
     @Email(message = "Email need contain dot and @")
     private String email;
     @Column(length = 64, nullable = false)
-    @NotBlank(message = "Password is mandatory.")
+    @NotEmpty(message = "Password is mandatory.")
     private String password;
 
     public Long getId() {

@@ -12,7 +12,7 @@ import java.sql.Date;
 public class BookEntity {
     protected BookEntity(){}
 
-    public BookEntity(String title, String synopsis, String authorName, Date publishedAt, String publisher, BookStatus bookStatus) {
+    public BookEntity(String title, String synopsis, String authorName, String publishedAt, String publisher, BookStatus bookStatus) {
         this.title = title;
         this.synopsis = synopsis;
         this.authorName = authorName;
@@ -39,7 +39,7 @@ public class BookEntity {
     private String authorName;
 
     @Column(nullable = false)
-    private Date publishedAt;
+    private String publishedAt;
 
     @Column(nullable = false)
     @NotBlank(message = "Publisher is mandatory.")
@@ -47,10 +47,9 @@ public class BookEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    @NotBlank(message = "Book Status is mandatory.")
     private BookStatus bookStatus;
 
-    private enum BookStatus {
+    public enum BookStatus {
         UNAVAILABLE, AVAILABLE;
     }
 
@@ -82,11 +81,11 @@ public class BookEntity {
         this.authorName = authorName;
     }
 
-    public Date getPublishedAt() {
+    public String getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(Date publishedAt) {
+    public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
     }
 

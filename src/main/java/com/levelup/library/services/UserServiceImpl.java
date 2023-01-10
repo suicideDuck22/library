@@ -37,8 +37,12 @@ public class UserServiceImpl implements UserService {
     public void createUser(UserEntity newUser) {
         validateUserCPFEmailBirthDate(newUser);
 
-        newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
+        newUser.setPassword(this.passwordEncrypt(newUser.getPassword()));
         userRepository.save(newUser);
+    }
+
+    private String passwordEncrypt(String rawPassword){
+        return DigestUtils.sha256Hex(rawPassword);
     }
 
     public void deleteUser(Long id) {

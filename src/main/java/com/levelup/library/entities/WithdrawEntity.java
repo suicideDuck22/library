@@ -10,9 +10,9 @@ import org.springframework.validation.annotation.Validated;
 public class WithdrawEntity {
     protected WithdrawEntity(){}
 
-    public WithdrawEntity(UserEntity userId, int bookId, String withdrawDate) {
-        this.userId = userId;
-        this.bookId = bookId;
+    public WithdrawEntity(UserEntity user, BookEntity book, String withdrawDate) {
+        this.user = user;
+        this.book = book;
         this.withdrawDate = withdrawDate;
     }
 
@@ -21,17 +21,15 @@ public class WithdrawEntity {
     @Column(nullable = false)
     private Long id;
 
-    @NotBlank(message = "Is mandatory inform the user making the withdraw.")
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
-    private UserEntity userId;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Is mandatory inform the book being withdraw")
-    private int bookId;
+    @OneToOne
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
+    private BookEntity book;
 
     @Column
-    @NotBlank(message = "Date of the with draw is mandatory")
     private String withdrawDate;
 
     @Column
@@ -42,19 +40,19 @@ public class WithdrawEntity {
     }
 
     public UserEntity getUserId() {
-        return userId;
+        return user;
     }
 
-    public void setUserId(UserEntity userId) {
-        this.userId = userId;
+    public void setUserId(UserEntity user) {
+        this.user = user;
     }
 
-    public int getBookId() {
-        return bookId;
+    public BookEntity getBookId() {
+        return book;
     }
 
     public void setBookId(int bookId) {
-        this.bookId = bookId;
+        this.book = book;
     }
 
     public String getWithdrawDate() {
