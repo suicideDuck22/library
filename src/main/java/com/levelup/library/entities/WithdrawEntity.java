@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 public class WithdrawEntity {
     protected WithdrawEntity(){}
 
-    public WithdrawEntity(int userId, int bookId, String withdrawDate) {
+    public WithdrawEntity(UserEntity userId, int bookId, String withdrawDate) {
         this.userId = userId;
         this.bookId = bookId;
         this.withdrawDate = withdrawDate;
@@ -21,9 +21,10 @@ public class WithdrawEntity {
     @Column(nullable = false)
     private Long id;
 
-    @Column(nullable = false)
     @NotBlank(message = "Is mandatory inform the user making the withdraw.")
-    private int userId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private UserEntity userId;
 
     @Column(nullable = false)
     @NotBlank(message = "Is mandatory inform the book being withdraw")
@@ -40,11 +41,11 @@ public class WithdrawEntity {
         return id;
     }
 
-    public int getUserId() {
+    public UserEntity getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(UserEntity userId) {
         this.userId = userId;
     }
 
