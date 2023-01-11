@@ -20,16 +20,17 @@ public class Book {
     @Autowired
     private BookServiceImpl bookService;
 
-    @GetMapping("/")
-    private ResponseEntity<Map<String, Collection<BookEntity>>> getAll(){
+    @GetMapping()
+    private ResponseEntity<Map<String, Collection<BookEntity>>> find(@RequestParam(required = false) Integer booked){
         Map<String, List<BookEntity>> books = new HashMap<>();
-        books.put("books", bookService.getAllBooks());
+        books.put("books", bookService.find(booked));
+
         return new ResponseEntity(books, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<BookEntity> get(@PathVariable Long id){
-        BookEntity book = bookService.getBook(id);
+    private ResponseEntity<BookEntity> findById(@PathVariable Long id){
+        BookEntity book = bookService.findById(id);
         return new ResponseEntity(book, HttpStatus.OK);
     }
 
@@ -37,9 +38,9 @@ public class Book {
             value = "/",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    ResponseEntity<Map<String, String>> insert(@RequestBody @Valid BookEntity book){
+    ResponseEntity<Map<String, String>> create(@RequestBody @Valid BookEntity book){
         Map<String, String> responseObject = new HashMap<>();
-        bookService.insertBook(book);
+        bookService.create(book);
 
         responseObject.put("message", "Book inserted successfully.");
         return new ResponseEntity(responseObject, HttpStatus.CREATED);
@@ -48,7 +49,7 @@ public class Book {
     @DeleteMapping("/{id}")
     ResponseEntity<Map<String, String>> remove(@PathVariable Long id){
         Map<String, String> responseObject = new HashMap<>();
-        bookService.deleteBook(id);
+        bookService.delete(id);
 
         responseObject.put("message", "Book removed successfully.");
         return new ResponseEntity(responseObject, HttpStatus.OK);
@@ -60,7 +61,7 @@ public class Book {
     )
     ResponseEntity<Map<String, String>> update(@PathVariable Long id, @RequestBody @Valid BookEntity updatedBook){
         Map<String, String> responseObject = new HashMap<>();
-        bookService.updateBook(id, updatedBook);
+        bookService.update(id, updatedBook);
 
         responseObject.put("message", "Book updated successfully.");
         return new ResponseEntity(responseObject, HttpStatus.OK);

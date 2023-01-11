@@ -11,6 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,51 +23,51 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<UserEntity> getAllUsers() {
-        List<UserEntity> users = userRepository.findAll();
-        return users;
-    }
-    public UserEntity getUser(Long id) {
-        Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
-            throw new NoSuchElementException("User with ID " + id + " not founded.");
-        }));
+    public List<UserEntity> find(Long userId) {
+        System.out.println(userId);
+        if(userId == null){
+            return userRepository.findAll();
+        }
+        List<UserEntity> user = new ArrayList<>();
+        user.add(Optional.ofNullable(userRepository.findById(userId).orElseThrow(() -> {
+            throw new NoSuchElementException("User with ID " + userId + " not founded.");
+        })).get());
 
-        return user.get();
-    }
-
-    public void createUser(UserEntity newUser) {
-        validateUserCPFEmailBirthDate(newUser);
-
-        newUser.setPassword(this.passwordEncrypt(newUser.getPassword()));
-        userRepository.save(newUser);
+        return user;
     }
 
-    private String passwordEncrypt(String rawPassword){
-        return DigestUtils.sha256Hex(rawPassword);
-    }
-
-    public void deleteUser(Long id) {
-        Optional<UserEntity> userToDelete = Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
+    public void delete(Long id) {
+        Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
 
         userRepository.deleteById(id);
     }
 
+    public void create(UserEntity newUser) {
+        validateUserCPFEmailBirthDate(newUser);
+
+        newUser.setPassword(this.passwordEncrypt(newUser.getPassword()));
+        userRepository.save(newUser);
+    }
+
     @Transactional
-    public void updateUser(Long id, UserEntity updatedUser) {
+    public void update(Long id, UserEntity updatedUser) {
         Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
 
         validateUserCPFEmailBirthDate(updatedUser);
-
         updatedUser.setPassword(DigestUtils.sha256Hex(updatedUser.getPassword()));
 
         entityManager.merge(updatedUser);
     }
 
-    public void validateUserCPFEmailBirthDate(UserEntity user){
+    private String passwordEncrypt(String rawPassword){
+        return DigestUtils.sha256Hex(rawPassword);
+    }
+
+    private void validateUserCPFEmailBirthDate(UserEntity user){
         Validator.EmailIsAvailable(user);
         Validator.validateCPF(user.getCpf());
         Validator.CPFAvailable(user);

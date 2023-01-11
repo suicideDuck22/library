@@ -12,12 +12,6 @@ public interface WithdrawService {
 
     WithdrawEntity get(Long id);
 
-    List<WithdrawEntity> getAllWithdrawsByUserId(Long id);
-
-    List<WithdrawEntity> getAllPendentWithdrawsByUserId(Long user);
-
-    List<WithdrawEntity> getAllReturnedWithdrawsByUserId(Long userId);
-
     void insert(WithdrawEntity newWithdraw);
 
     void returnBook(WithdrawEntity withdrawToReturn);

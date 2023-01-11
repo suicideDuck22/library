@@ -3,11 +3,11 @@ package com.levelup.library.services;
 import com.levelup.library.entities.BookEntity;
 import com.levelup.library.interfaces.BookService;
 import com.levelup.library.repositories.BookRepository;
+import com.levelup.library.utils.Validator;
+import jakarta.persistence.EntityManager;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,18 +15,22 @@ import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
+    @Autowired
+    EntityManager entityManager;
 
     @Autowired
     private BookRepository bookRepository;
 
     @Override
-    public List<BookEntity> getAllBooks() {
-        List<BookEntity> books = bookRepository.findAll();
-        return books;
+    public List<BookEntity> find(Integer booked) {
+        if(booked == null){
+            return bookRepository.findAll();
+        }
+        return bookRepository.findByStatus(booked);
     }
 
     @Override
-    public BookEntity getBook(Long id) {
+    public BookEntity findById(Long id) {
         Optional<BookEntity> book = Optional.ofNullable(bookRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
@@ -35,17 +39,28 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void insertBook(BookEntity newBook) {
+    public void create(BookEntity newBook) {
+        Validator.IsAValidDate(newBook.getPublishedAt());
+        newBook.setBookStatus(BookEntity.AVAILABLE);
         bookRepository.save(newBook);
     }
 
     @Override
-    public void deleteBook(Long id) {
+    public void delete(Long id) {
+        Optional.ofNullable(bookRepository.findById(id).orElseThrow(() -> {
+            throw new NoSuchElementException("Book with ID " + id + " not founded.");
+        }));
 
+        bookRepository.deleteById(id);
     }
 
     @Override
-    public void updateBook(Long id, BookEntity updatedBook) {
+    public void update(Long id, BookEntity updatedBook) {
+        Optional.ofNullable(bookRepository.findById(id).orElseThrow(() -> {
+            throw new NoSuchElementException("Book with ID " + id + " not founded.");
+        }));
+        Validator.IsAValidDate(updatedBook.getPublishedAt());
 
+        entityManager.merge(updatedBook);
     }
 }

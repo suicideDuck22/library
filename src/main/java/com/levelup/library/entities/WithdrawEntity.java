@@ -1,12 +1,13 @@
 package com.levelup.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Entity
 @Table(name = "withdrawal")
+@JsonIgnoreProperties("hibernateLazyInitializer")
 public class WithdrawEntity {
     protected WithdrawEntity(){}
 
@@ -21,11 +22,11 @@ public class WithdrawEntity {
     @Column(nullable = false)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_id", referencedColumnName = "id")
     private BookEntity book;
 
@@ -43,31 +44,15 @@ public class WithdrawEntity {
         return user;
     }
 
-    public void setUserId(UserEntity user) {
-        this.user = user;
-    }
-
     public BookEntity getBookId() {
         return book;
-    }
-
-    public void setBookId(int bookId) {
-        this.book = book;
     }
 
     public String getWithdrawDate() {
         return withdrawDate;
     }
 
-    public void setWithdrawDate(String withdrawDate) {
-        this.withdrawDate = withdrawDate;
-    }
-
     public String getReturnDate() {
         return returnDate;
-    }
-
-    public void setReturnDate(String returnDate) {
-        this.returnDate = returnDate;
     }
 }

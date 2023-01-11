@@ -1,14 +1,17 @@
 package com.levelup.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
 import java.sql.Date;
+import java.util.Set;
 
 @Validated
 @Entity
 @Table(name = "person")
+@JsonIgnoreProperties("hibernateLazyInitializer")
 public class UserEntity {
 
     protected UserEntity(){}
@@ -47,6 +50,9 @@ public class UserEntity {
     @Column(length = 64, nullable = false)
     @NotEmpty(message = "Password is mandatory.")
     private String password;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = WithdrawEntity.class)
+    private Set<WithdrawEntity> withdraws;
 
     public Long getId() {
         return id;

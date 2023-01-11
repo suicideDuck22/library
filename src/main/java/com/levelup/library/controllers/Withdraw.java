@@ -1,6 +1,7 @@
 package com.levelup.library.controllers;
 
 import com.levelup.library.entities.WithdrawEntity;
+import com.levelup.library.enums.WithdrawStatus;
 import com.levelup.library.repositories.WithdrawRepository;
 import com.levelup.library.services.WithdrawServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class Withdraw {
     private WithdrawServiceImpl withdrawService;
 
     @GetMapping()
-    ResponseEntity<Map<String, Collection<WithdrawEntity>>> getAll(@RequestParam(required = false)  String status, @RequestParam Long id){
+    ResponseEntity<Map<String, Collection<WithdrawEntity>>> getAll(@RequestParam Long id, @RequestParam(required = false) WithdrawStatus status){
         Map<String, List<WithdrawEntity>> responseObject = new HashMap<>();
         List<WithdrawEntity> withdraws = withdrawService.getWithdrawsByUser(id, status);
 

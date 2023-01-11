@@ -1,24 +1,26 @@
 package com.levelup.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
-import java.sql.Date;
-
+@JsonIgnoreProperties("hibernateLazyInitializer")
 @Validated
 @Entity
 @Table(name = "book")
 public class BookEntity {
+
+    public static final int AVAILABLE = 0;
+    public static final int BOOKED = 1;
     protected BookEntity(){}
 
-    public BookEntity(String title, String synopsis, String authorName, String publishedAt, String publisher, BookStatus bookStatus) {
+    public BookEntity(String title, String synopsis, String authorName, String publishedAt, String publisher) {
         this.title = title;
         this.synopsis = synopsis;
         this.authorName = authorName;
         this.publishedAt = publishedAt;
         this.publisher = publisher;
-        this.bookStatus = bookStatus;
     }
 
     @Id
@@ -45,13 +47,8 @@ public class BookEntity {
     @NotBlank(message = "Publisher is mandatory.")
     private String publisher;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    private BookStatus bookStatus;
-
-    public enum BookStatus {
-        UNAVAILABLE, AVAILABLE;
-    }
+    private int bookStatus;
 
     public Long getId() {
         return id;
@@ -61,47 +58,27 @@ public class BookEntity {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getSynopsis() {
         return synopsis;
-    }
-
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
     }
 
     public String getAuthorName() {
         return authorName;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
     public String getPublishedAt() {
         return publishedAt;
-    }
-
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
     }
 
     public String getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public BookStatus getBookStatus() {
+    public int getBookStatus() {
         return bookStatus;
     }
 
-    public void setBookStatus(BookStatus bookStatus) {
+    public void setBookStatus(int bookStatus) {
         this.bookStatus = bookStatus;
     }
 }

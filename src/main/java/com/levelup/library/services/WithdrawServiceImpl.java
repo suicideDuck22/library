@@ -2,6 +2,7 @@ package com.levelup.library.services;
 
 import com.levelup.library.entities.UserEntity;
 import com.levelup.library.entities.WithdrawEntity;
+import com.levelup.library.enums.WithdrawStatus;
 import com.levelup.library.interfaces.WithdrawService;
 import com.levelup.library.repositories.WithdrawRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,16 @@ public class WithdrawServiceImpl implements WithdrawService {
     @Autowired
     private WithdrawRepository withdrawRepository;
 
-    public List<WithdrawEntity> getWithdrawsByUser(Long userId, String status){
+    public List<WithdrawEntity> getWithdrawsByUser(Long id, WithdrawStatus status){
         if(StringUtils.isEmpty(status)){
-            return withdrawRepository.getAllWithdrawsByUserId(userId);
+            return withdrawRepository.getAllWithdrawsByUserId(id);
         }
 
         switch (status){
-            case "PENDENT":
-                return withdrawRepository.getAllPendentWithdrawsByUserId(userId);
-            case "RETURNED":
-                return withdrawRepository.getAllReturnedWithdrawsByUserId(userId);
+            case PENDENT:
+                return withdrawRepository.getAllPendentWithdrawsByUserId(id);
+            case RETURNED:
+                return withdrawRepository.getAllReturnedWithdrawsByUserId(id);
             default:
                 throw new InvalidParameterException("Parameter " + status + " is not valid.");
         }
@@ -44,21 +45,6 @@ public class WithdrawServiceImpl implements WithdrawService {
             throw new NoSuchElementException("Couldn't found this withdraw.");
         }));
         return withdraw.get();
-    }
-
-    @Override
-    public List<WithdrawEntity> getAllWithdrawsByUserId(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<WithdrawEntity> getAllPendentWithdrawsByUserId(Long user) {
-        return withdrawRepository.getAllPendentWithdrawsByUserId(user);
-    }
-
-    @Override
-    public List<WithdrawEntity> getAllReturnedWithdrawsByUserId(Long userId) {
-        return null;
     }
 
     @Override

@@ -3,15 +3,17 @@ package com.levelup.library.interfaces;
 import com.levelup.library.entities.BookEntity;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface BookService {
-    Collection<BookEntity> getAllBooks();
 
-    BookEntity getBook(Long id);
+    List<BookEntity> find(Integer booked);
 
-    void insertBook(BookEntity newBook);
+    BookEntity findById(Long id);
 
-    void deleteBook(Long id);
+    void create(BookEntity newBook);
 
-    void updateBook(Long id, BookEntity updatedBook);
+    void delete(Long id);
+
+    void update(Long id, BookEntity updatedBook);
 }

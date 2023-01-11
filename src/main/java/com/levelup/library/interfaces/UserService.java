@@ -4,17 +4,14 @@ import com.levelup.library.entities.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Map;
 
 @Service
 public interface UserService {
-    Collection<UserEntity > getAllUsers();
+    Collection<UserEntity> find(Long userId);
 
-    UserEntity getUser(Long id);
+    void create(UserEntity newUser);
 
-    void createUser(UserEntity newUser);
+    void delete(Long id);
 
-    void deleteUser(Long id);
-
-    void updateUser(Long id, UserEntity updatedUser);
+    void update(Long id, UserEntity updatedUser);
 }
