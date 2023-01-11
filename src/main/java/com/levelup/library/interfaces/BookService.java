@@ -16,4 +16,6 @@ public interface BookService {
     void delete(Long id);
 
     void update(Long id, BookEntity updatedBook);
+
+    String returnOrWithdraw(Long bookId, Long userId, Integer status);
 }

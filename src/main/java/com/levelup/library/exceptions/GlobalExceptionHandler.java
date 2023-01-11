@@ -80,4 +80,20 @@ public class GlobalExceptionHandler {
         error.put("message", ex.getMessage());
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({ InvalidReturnException.class })
+    public ResponseEntity<Map<String, String>> handleInvalidReturnException(InvalidReturnException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Book already available.");
+        error.put("message", ex.getMessage());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ InvalidWithdrawException.class })
+    public ResponseEntity<Map<String, String>> handleInvalidWithdrawException(InvalidWithdrawException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Book already reserved.");
+        error.put("message", ex.getMessage());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
 }

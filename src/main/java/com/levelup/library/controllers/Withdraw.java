@@ -33,7 +33,7 @@ public class Withdraw {
     @GetMapping("/{id}")
     ResponseEntity<Map<String, WithdrawEntity>> get(@PathVariable Long id){
         Map<String, WithdrawEntity> responseObject = new HashMap<>();
-        responseObject.put("withdraw", withdrawService.get(id));
+        responseObject.put("withdraw", withdrawService.find(id));
 
         return new ResponseEntity(responseObject, HttpStatus.OK);
     }

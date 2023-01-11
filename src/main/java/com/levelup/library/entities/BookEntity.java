@@ -15,12 +15,13 @@ public class BookEntity {
     public static final int BOOKED = 1;
     protected BookEntity(){}
 
-    public BookEntity(String title, String synopsis, String authorName, String publishedAt, String publisher) {
+    public BookEntity(String title, String synopsis, String authorName, String publishedAt, String publisher, Integer bookStatus) {
         this.title = title;
         this.synopsis = synopsis;
         this.authorName = authorName;
         this.publishedAt = publishedAt;
         this.publisher = publisher;
+        this.bookStatus = bookStatus;
     }
 
     @Id
@@ -48,7 +49,7 @@ public class BookEntity {
     private String publisher;
 
     @Column(nullable = false)
-    private int bookStatus;
+    private Integer bookStatus;
 
     public Long getId() {
         return id;
@@ -74,11 +75,11 @@ public class BookEntity {
         return publisher;
     }
 
-    public int getBookStatus() {
+    public Integer getBookStatus() {
         return bookStatus;
     }
 
-    public void setBookStatus(int bookStatus) {
+    public void setBookStatus(Integer bookStatus) {
         this.bookStatus = bookStatus;
     }
 }

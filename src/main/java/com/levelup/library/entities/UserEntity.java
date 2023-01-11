@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
-import java.sql.Date;
 import java.util.Set;
 
 @Validated

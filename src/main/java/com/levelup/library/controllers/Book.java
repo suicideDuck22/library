@@ -66,4 +66,13 @@ public class Book {
         responseObject.put("message", "Book updated successfully.");
         return new ResponseEntity(responseObject, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}/{status}")
+    ResponseEntity<Map<String, String>> update(@PathVariable Long id, @PathVariable Integer status){
+        Map<String, String> responseObject = new HashMap<>();
+        bookService.returnOrWithdraw(id, 1L, status);
+
+        responseObject.put("message", "Book updated successfully.");
+        return new ResponseEntity(responseObject, HttpStatus.OK);
+    }
 }

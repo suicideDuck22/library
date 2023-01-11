@@ -10,7 +10,7 @@ import java.util.List;
 public interface WithdrawService {
     List<WithdrawEntity> getAll();
 
-    WithdrawEntity get(Long id);
+    WithdrawEntity find(Long id);
 
     void insert(WithdrawEntity newWithdraw);
 

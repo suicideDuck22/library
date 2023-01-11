@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.security.InvalidParameterException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -40,9 +42,9 @@ public class WithdrawServiceImpl implements WithdrawService {
     }
 
     @Override
-    public WithdrawEntity get(Long id) {
+    public WithdrawEntity find(Long id) {
         Optional<WithdrawEntity> withdraw = Optional.ofNullable(withdrawRepository.findById(id).orElseThrow(() -> {
-            throw new NoSuchElementException("Couldn't found this withdraw.");
+            throw new NoSuchElementException("Couldn't found this reserve.");
         }));
         return withdraw.get();
     }
