@@ -96,4 +96,12 @@ public class GlobalExceptionHandler {
         error.put("message", ex.getMessage());
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler({ NoSuchIdException.class })
+    public ResponseEntity<Map<String, String>> handleNoSuchIdException(NoSuchIdException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Invalid ID.");
+        error.put("message", ex.getMessage());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+
 }

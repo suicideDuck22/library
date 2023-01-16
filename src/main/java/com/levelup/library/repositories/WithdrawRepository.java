@@ -18,4 +18,7 @@ public interface WithdrawRepository extends JpaRepository<WithdrawEntity, Long> 
 
     @Query(value = "SELECT * FROM withdrawal WHERE user_id = :userId", nativeQuery = true)
     List<WithdrawEntity> getAllWithdrawsByUserId(Long userId);
+
+    @Query(value = "SELECT * FROM withdrawal WHERE book_id = :bookId AND return_date IS NULL", nativeQuery = true)
+    WithdrawEntity findPendentWithdrawByBookId(Long bookId);
 }

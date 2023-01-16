@@ -58,4 +58,8 @@ public class WithdrawServiceImpl implements WithdrawService {
     public void returnBook(WithdrawEntity withdrawToReturn) {
 
     }
+
+    protected WithdrawEntity findPendentWithdrawByBookId(Long bookId){
+        Optional<WithdrawEntity> pendentWithdraw = Optional.ofNullable(withdrawRepository.findPendentWithdrawByBookId(bookId).);
+    }
 }

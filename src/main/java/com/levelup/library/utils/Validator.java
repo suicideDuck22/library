@@ -55,7 +55,7 @@ public class Validator {
             sm = 0;
             peso = 10;
             for (i=0; i<9; i++) {
-                num = (int)(cpf.charAt(i) - 48);
+                num = cpf.charAt(i) - 48;
                 sm = sm + (num * peso);
                 peso = peso - 1;
             }
@@ -68,7 +68,7 @@ public class Validator {
             sm = 0;
             peso = 11;
             for(i=0; i<10; i++) {
-                num = (int)(cpf.charAt(i) - 48);
+                num = cpf.charAt(i) - 48;
                 sm = sm + (num * peso);
                 peso = peso - 1;
             }
@@ -86,8 +86,8 @@ public class Validator {
     }
 
     public static void CPFAvailable(UserEntity user) {
-        Optional.ofNullable(staticUserRepository.findByCpf(user.getCpf())).map(UserEntity::getCpf).ifPresent(foundedId -> {
-            if(!foundedId.equals(user.getId())){
+        Optional.ofNullable(staticUserRepository.findByCpf(user.getCpf())).map(UserEntity::getId).ifPresent(foundedId -> {
+            if(foundedId.equals(user.getId())){
                 throw new CpfInUseException(user.getCpf());
             }
         });

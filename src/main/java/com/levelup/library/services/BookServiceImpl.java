@@ -4,6 +4,7 @@ import com.levelup.library.entities.BookEntity;
 import com.levelup.library.entities.WithdrawEntity;
 import com.levelup.library.exceptions.InvalidReturnException;
 import com.levelup.library.exceptions.InvalidWithdrawException;
+import com.levelup.library.exceptions.NoSuchIdException;
 import com.levelup.library.interfaces.BookService;
 import com.levelup.library.repositories.BookRepository;
 import com.levelup.library.utils.Validator;
@@ -64,19 +65,20 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void update(Long id, BookEntity updatedBook) {
-        this.verifyBookIdExists(id);
+        BookEntity book = this.verifyBookIdExists(id);
         Validator.IsAValidDate(updatedBook.getPublishedAt());
-
+        updatedBook.setBookStatus(book.getBookStatus());
+        updatedBook.setId(id);
         entityManager.merge(updatedBook);
     }
 
     @Override
     @Transactional
     public String returnOrWithdraw(Long bookId, Long userId, Integer status){
-        if(status == null){
+        if(status == null)
             throw new InvalidParameterException("Status need to be informed");
-        }
 
         BookEntity book = this.verifyBookIdExists(bookId);
 
@@ -84,29 +86,39 @@ public class BookServiceImpl implements BookService {
             case 0 -> this.returnBook(book, userId);
             case 1 -> this.withdrawBook(book, userId);
             default ->
-                    throw new InvalidParameterException("Informed status " + status + " are not valid, need be 0 or 1.");
+                    throw new InvalidParameterException("Informed status " + status + " is not valid, need be 0 or 1.");
         };
     }
 
     @Transactional
     private String returnBook(BookEntity book, Long userId){
-        if(book.getBookStatus() == BookEntity.AVAILABLE){
+        if(userId == null)
+            throw new NoSuchIdException();
+
+        if(book.getBookStatus() == BookEntity.AVAILABLE)
             throw new InvalidReturnException("This book is already available, cannot return him.");
-        }
+
         book.setBookStatus(BookEntity.AVAILABLE);
         entityManager.merge(book);
         return "Book returned successfully.";
     }
 
+    private WithdrawEntity getBookPendentWithdraw(Long bookId){
+        withdrawService.findPendentWithdrawByBookId(bookId);
+    }
+
     @Transactional
     private String withdrawBook(BookEntity book, Long userId){
-        if(book.getBookStatus() == BookEntity.BOOKED){
+        if(userId == null)
+            throw new NoSuchIdException();
+
+        if(book.getBookStatus() == BookEntity.BOOKED)
             throw new InvalidWithdrawException("This book is already reserved by a user, cannot reserve him.");
-        }
+
         withdrawService.insert(new WithdrawEntity(userService.find(userId).get(0), book, this.getFormattedCurrentDate()));
         book.setBookStatus(BookEntity.BOOKED);
         entityManager.merge(book);
-        return "Book booked successfully.";
+        return "Book reserved successfully.";
     }
 
     private String getFormattedCurrentDate(){

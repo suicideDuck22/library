@@ -1,6 +1,7 @@
 package com.levelup.library.services;
 
 import com.levelup.library.entities.UserEntity;
+import com.levelup.library.exceptions.NoSuchIdException;
 import com.levelup.library.interfaces.UserService;
 import com.levelup.library.repositories.UserRepository;
 import com.levelup.library.utils.Validator;
@@ -24,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     public List<UserEntity> find(Long userId) {
-        System.out.println(userId);
         if(userId == null){
             return userRepository.findAll();
         }
@@ -53,12 +53,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void update(Long id, UserEntity updatedUser) {
+        if(id == null)
+            throw new NoSuchIdException();
+
         Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");
         }));
 
         validateUserCPFEmailBirthDate(updatedUser);
-        updatedUser.setPassword(DigestUtils.sha256Hex(updatedUser.getPassword()));
+        String hashedPass = this.passwordEncrypt(updatedUser.getPassword());
+        updatedUser.setPassword(DigestUtils.sha256Hex(hashedPass));
 
         entityManager.merge(updatedUser);
     }
