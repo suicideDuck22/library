@@ -36,6 +36,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public UserEntity findUserByEmail(String userEmail){
+        return userRepository.findByEmail(userEmail);
+    }
+
     public void delete(Long id) {
         Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> {
             throw new NoSuchElementException("User with ID " + id + " not founded.");

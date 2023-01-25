@@ -60,6 +60,7 @@ public class WithdrawServiceImpl implements WithdrawService {
     }
 
     protected WithdrawEntity findPendentWithdrawByBookId(Long bookId){
-        Optional<WithdrawEntity> pendentWithdraw = Optional.ofNullable(withdrawRepository.findPendentWithdrawByBookId(bookId).);
+        Optional<WithdrawEntity> pendentWithdraw = Optional.ofNullable(withdrawRepository.findPendentWithdrawByBookId(bookId));
+        return null;
     }
 }

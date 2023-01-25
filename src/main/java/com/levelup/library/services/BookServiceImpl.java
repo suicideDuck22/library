@@ -104,7 +104,7 @@ public class BookServiceImpl implements BookService {
     }
 
     private WithdrawEntity getBookPendentWithdraw(Long bookId){
-        withdrawService.findPendentWithdrawByBookId(bookId);
+        return withdrawService.findPendentWithdrawByBookId(bookId);
     }
 
     @Transactional
